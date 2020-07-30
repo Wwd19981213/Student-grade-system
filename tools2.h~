@@ -1,0 +1,10 @@
+#ifndef TOOLS2_H
+#define TOOLS2_H
+
+void chagrade(char* name);
+
+void change(char* name);
+
+void chainf(char* name);
+
+#endif//TOOLS2_H
