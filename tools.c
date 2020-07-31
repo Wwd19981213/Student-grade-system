@@ -10,11 +10,19 @@ Stu_exit stu_exit[100];
 //添加学生
 void add(void)
 {
-	printf("请输入学生信息:\n");
-	int cnt=0;
-	while(0 != stu[cnt].sex) cnt++;
-	scanf("%c%s",&stu[cnt].sex,stu[cnt].name);
-	stu[cnt].num=cnt;
+	int N;
+	printf("请输入您要添加的学生个数:\n");
+	scanf("%d",&N);
+	getchar();
+	printf("请输入学生信息(性别 姓名):\n");
+	for(int i=0;i<N;i++)
+	{
+		int cnt=0;
+		while(stu[cnt].sex) cnt++;
+		scanf("%c%s",&stu[cnt].sex,stu[cnt].name);
+		getchar();
+		stu[cnt].num=cnt;
+	}
 	printf("录入成功\n");
 	sleep(3);
 }
@@ -31,19 +39,21 @@ void del(void)
 	stu_exit[cnt].sex=stu[num].sex;
 	stu_exit[cnt].num=stu[num].num;
 	stu[num].sex=0;
+	printf("删除成功！\n");
+	sleep(2);
 }
 
 //查找学生
 void found(void)
 {
-	printf("请选择查找方式:");
+	printf("请选择查找方式(n/m 姓名/学号):\n");
 	char key;
 	scanf("%c",&key);
 	if(key == 'n')
 	{
 		char name[20];
 		int cnt=0;
-		printf("请输入要查询的姓名:");
+		printf("请输入要查询的姓名:\n");
 		scanf("%s",name);
 		while(stu[cnt].sex)
 		{
@@ -63,7 +73,7 @@ void found(void)
 	else if(key == 'm')
 	{
 		int num;
-		printf("请输入要查询的学号");
+		printf("请输入要查询的学号\n");
 		scanf("%d",&num);
 		if(0 != stu[num].sex)
 		{
@@ -82,6 +92,7 @@ void found(void)
 void modify(void)
 {
 	char name[20];
+	char key;
 	printf("请输入要修改的学生姓名:\n");
 	scanf("%s",name);
 	int cnt=0;
@@ -93,15 +104,46 @@ void modify(void)
 		}
 		cnt++;
 	}
-	printf("请输入修改信息(c/m/e)\n");
-	char subject;
-	int score;
-	scanf("%c %d",&subject,&score);
-	switch(subject)
+	printf("请选择您要修改的信息（a/b 基础信息/成绩）\n");
+	getchar();
+	scanf("%c",&key);
+	getchar();
+	if('a' == key)
 	{
-		case 'c':stu[cnt].chinese=score;break;
-		case 'm':stu[cnt].math=score;break;
-		case 'e':stu[cnt].english=score;break;
+		char inf;
+		printf("请选择您要修改的信息(s/n 性别/学号)\n");
+		scanf("%c",&inf);
+		if('s' == inf)
+		{
+			printf("请输入您要修改的内容:\n");
+			scanf("%c",&stu[cnt].sex);
+			printf("修改成功！\n");
+			sleep(3);
+		}
+		else
+		{
+			printf("请输入您要修改的内容\n");
+			scanf("%d",&stu[cnt].num);
+			printf("修改成功!\n");
+			sleep(3);
+		}
+	}
+	else
+	{
+		char subject;
+		int score;
+		printf("请输入您要修改的科目(c/m/e)\n");
+		scanf("%c",&subject);
+		printf("请输入您要修改的成绩\n");
+		scanf("%d",&score);
+		switch(subject)
+		{
+			case 'c':stu[cnt].chinese=score;break;
+			case 'm':stu[cnt].math=score;break;
+			case 'e':stu[cnt].english=score;break;
+		}
+		printf("修改成功！\n");
+		sleep(2);
 	}
 }
 
@@ -112,7 +154,7 @@ void input(void)
 	int N;
 	printf("请输入想录入的学生个数\n");
 	scanf("%d",&N);
-	printf("请开始录入:\n");
+	printf("请开始录入（姓名 语文 数学 英语）:\n");
 	for(int i=0;i<N;i++)
 	{
 		int cnt=0;
@@ -122,12 +164,39 @@ void input(void)
 			if(!strcmp(stu[cnt].name,name))
 			{
 				scanf("%d%d%d",&stu[cnt].chinese,&stu[cnt].math,&stu[cnt].english);
+				stu[cnt].sum=stu[cnt].chinese+stu[cnt].math+stu[cnt].english;
 			}
 			cnt++;
 		}
 	}
 	printf("录入成功！\n");
 	sleep(3);
+}
+
+//学生成绩排名
+void rank(void)
+{
+	Stu temp;
+	int cnt=0;
+	while(stu[cnt].sex) cnt++;
+	for(int i=0;i<cnt-1;i++)
+	{
+		for(int j=cnt-1;j>0;j--)
+		{
+			if(stu[j].sum>stu[j-1].sum)
+			{
+				temp=stu[j];
+				stu[j]=stu[j-1];
+				stu[j-1]=temp;
+			}
+		}
+	}
+	for(int i=0;i<cnt;i++)
+	{
+		stu[i].rank=i;
+	}
+	printf("排名已完成！\n");
+	getch();
 }
 
 //重置学生密码
@@ -141,6 +210,9 @@ void reset(void)
 		if(!strcmp(stu[cnt].name,name))
 		{
 			stu[cnt].password[0]='\0';
+			stu[cnt].lock=0;
+			printf("重置成功！\n");
+			sleep(3);
 			break;
 		}
 	}
@@ -149,11 +221,12 @@ void reset(void)
 //显示所有在校学生信息
 void view_online(void)
 {
-	int cnt=0;
-	while(0 != stu[cnt].sex)
+	for(int i=0;i<100;i++)
 	{
-		printf("%s %c %d %d %d %d\n",stu[cnt].name,stu[cnt].sex,stu[cnt].num,stu[cnt].chinese,stu[cnt].math,stu[cnt].english);
-		cnt++;
+		if(stu[i].sex)
+		{
+			printf("%s %c %d %d %d %d %d %d\n",stu[i].name,stu[i].sex,stu[i].num,stu[i].rank,stu[i].sum,stu[i].chinese,stu[i].math,stu[i].english);
+		}
 	}
 	getch();
 }

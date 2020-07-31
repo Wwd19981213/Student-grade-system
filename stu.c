@@ -19,6 +19,7 @@ void student(void)
 	{
 		if(!strcmp(stu[cnt].name,name))
 		{
+			//若stu[cnt].lock为1,则帐号已锁定
 			if(stu[cnt].lock)
 			{
 				printf("帐号已锁定\n");
@@ -27,50 +28,61 @@ void student(void)
 			}
 			if(0 == stu[cnt].password[0])
 			{
-				break;
+				printf("这是你第一次登录，请设置你的密码:");
+				while('\n'!=getchar());
+				scanf("%s",stu[cnt].password);
+				printf("设置完成!\n");
+				sleep(3);
+				return;
 			}
-			while('\n'!=getchar());
-			while(cnt_false<3)
+			else
 			{
-				printf("请输入你的密码:");
-				gets(password);
-				if(!strcmp(password,stu[cnt].password))
+				while('\n'!=getchar());
+				//若错误次数超过3次则锁定帐号
+				while(cnt_false<3)
 				{
-					printf("密码正确!\n");
-					sleep(3);
-					for(;;)
+					printf("请输入你的密码:");
+					gets(password);
+					if(!strcmp(password,stu[cnt].password))
 					{
-						system("clear");
-						printf("1、查询成绩\n");
-						printf("2、修改密码\n");
-						printf("3、查询个人信息\n");
-						printf("4、退出帐号\n");
-						switch(getch())
+						printf("密码正确!\n");
+						sleep(3);
+						for(;;)
 						{
-							case '1':chagrade(cnt);break;
-							case '2':change(cnt);break;
-							case '3':chainf(cnt);break;
-							case '4':return;
+							system("clear");
+							printf("-------------------------------\n");
+							printf("   1、查询成绩\n");
+							printf("-------------------------------\n");
+							printf("   2、修改密码\n");
+							printf("-------------------------------\n");
+							printf("   3、查询个人信息\n");
+							printf("-------------------------------\n");
+							printf("   4、退出帐号\n");
+							printf("-------------------------------\n");
+							switch(getch())
+							{
+								case '1':chagrade(cnt);break;
+								case '2':change(cnt);break;
+								case '3':chainf(cnt);break;
+								case '4':return;
+							}
 						}
 					}
-				}
-				else
-				{
-					printf("密码错误!");
-					cnt_false++;
+					else
+					{
+						printf("密码错误!");
+						cnt_false++;
+					}
 				}
 				stu[cnt].lock=1;
+				printf("帐号已锁定\n");
+				getch();
+				return;
 			}
-			printf("帐号已锁定\n");
-			getch();
-			return;
 		}
 		cnt++;
 	}
-	printf("这是你第一次登录，请设置你的密码:");
-	while('\n'!=getchar());
-	scanf("%c%s",&stu[cnt].sex,stu[cnt].password);
-	strcpy(stu[cnt].name,name);
-	printf("设置完成!\n");
+	//若直至退出循环仍未找到该用户名，则此人尚未录入
+	printf("查无此人！\n");
 	sleep(3);
 }

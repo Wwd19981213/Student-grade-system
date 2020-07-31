@@ -7,6 +7,7 @@
 
 Tch_exit tch_exit[100];
 
+//重置管理员自身密码
 void reset_admin(void)
 {
 	master_password[0]='\0';
@@ -14,6 +15,7 @@ void reset_admin(void)
 	sleep(3);
 }
 
+//重置教师密码
 void reset_tch(void)
 {
 	char name[20];
@@ -25,6 +27,7 @@ void reset_tch(void)
 		if(!strcmp(name,tch[cnt].name))
 		{
 			tch[cnt].password[0]='\0';
+			tch[cnt].lock=0;
 		}
 		cnt++;
 	}
@@ -32,6 +35,7 @@ void reset_tch(void)
 	sleep(3);
 }
 
+//添加教师
 void add_tch(void)
 {
 	int N;
@@ -50,6 +54,7 @@ void add_tch(void)
 	sleep(3);
 }
 
+//删除教师
 void del_tch(void)
 {
 	char name[20];
@@ -67,9 +72,12 @@ void del_tch(void)
 			tch[cnt].sex='\0';
 		}
 		cnt++;
-	}	
+	}
+	printf("删除成功！\n");
+	sleep(3);
 }
 
+//显示所有在职教师
 void view(void)
 {
 	int cnt=0;
@@ -77,18 +85,21 @@ void view(void)
 	{
 		if(tch[cnt].sex)
 		{
-			printf("%s %s %c\n",tch[cnt].name,tch[cnt].id,tch[cnt].sex);
+			printf("   %s %s %c\n",tch[cnt].name,tch[cnt].id,tch[cnt].sex);
+			printf("-------------------------------\n");
 		}
 	}
 	getch();
 }
 
+//显示所有离职教师
 void view_exit(void)
 {
 	int cnt=0;
 	while(tch_exit[cnt].sex)
 	{
-		printf("%s %c %s\n",tch_exit[cnt].name,tch_exit[cnt].sex,tch_exit[cnt].id);
+		printf("   %s %c %s\n",tch_exit[cnt].name,tch_exit[cnt].sex,tch_exit[cnt].id);
+		printf("-------------------------------\n");
 		cnt++;
 	}
 	getch();

@@ -16,6 +16,9 @@ void modify(void);
 //录入学生成绩
 void input(void);
 
+//学生成绩排名
+void rank(void);
+
 //重置学生密码
 void reset(void);
 

@@ -7,7 +7,7 @@ OBJ=main.o tch.o tools.o stu.o tools2.o master.o tools3.o
 all:$(OBJ)
 	$(CC) -o $(BIN) $(OBJ)
 	
-main.o:main.c tch.h stu.h master.h
+main.o:main.c main.h tch.h stu.h master.h
 	$(CC) $(STD) $(FLAG) -c main.c
 tch.o:tch.c tch.h tools.h main.h
 	$(CC) $(STD) $(FLAG) -c tch.c

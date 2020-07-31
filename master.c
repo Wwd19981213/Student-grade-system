@@ -12,6 +12,7 @@ char master_password[20];
 void master(void)
 {
 	char password[20];
+	//若尚未设置密码，则请管理员设置密码
 	if(0 == master_password[0])
 	{
 		printf("这是您第一次登录，请设置您的密码:\n");
@@ -19,6 +20,7 @@ void master(void)
 		printf("设置成功，请重新登录！\n");
 		sleep(3);
 	}
+	//若已设置密码，则请管理员输入密码
 	else
 	{
 		while(1)
@@ -32,13 +34,21 @@ void master(void)
 				for(;;)
 				{
 					system("clear");
-					printf("1、重置密码\n");
-					printf("2、重置教师密码\n");
-					printf("3、添加教师\n");
-					printf("4、删除教师\n");
-					printf("5、显示所有在职教师\n");
-					printf("6、显示所有离职教师\n");
-					printf("7、退出管理员模式\n");
+					printf("-------------------------------\n");
+					printf("   1、重置密码\n");
+					printf("-------------------------------\n");
+					printf("   2、重置教师密码\n");
+					printf("-------------------------------\n");
+					printf("   3、添加教师\n");
+					printf("-------------------------------\n");
+					printf("   4、删除教师\n");
+					printf("-------------------------------\n");
+					printf("   5、显示所有在职教师\n");
+					printf("-------------------------------\n");
+					printf("   6、显示所有离职教师\n");
+					printf("-------------------------------\n");
+					printf("   7、退出管理员模式\n");
+					printf("-------------------------------\n");
 					switch(getch())
 					{
 						case '1':reset_admin();break;
